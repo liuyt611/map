@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>China Map中国地图</title>
+    <link rel="stylesheet" href="css/map.css">
+    <script src="js/jquery.js"></script>
+    <script src="d3.v3.min.js"></script>
+    <script src="js/map.js"></script>
+</head>
+<body>
+    <div class="main">
+        <!-- <div id="clock">2017-11-09 11:40:36</div> -->
+        <div class="text"></div>
+        <div id="chinaMap">
+            <div id="pop"></div>
+            <div id="starHour"></div>
+            <div class="coverBg"></div>
+            <div class="coverBg1"></div>
+            <div id="starSecond"></div>
+        </div>
+        <div class="rightPart">
+            <!-- 广告系列 -->
+            <div class="details">
+                <div class="detailsList" id="detailsList">   
+                </div>
+            </div>
+            <!-- 投放预算 -->
+            <!-- <div class="budget">
+                <ul id="progressList">
+                </ul>
+            </div> -->
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    //创建svg
+    var width = 1204, height = 878;
+    var svg = d3.select("#chinaMap")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+    //创建投影(projection)
+    var projection = d3.geo.mercator().translate([width / 2, height / 2]).center([105, 38]).scale(1040);
+    //创建path
+    var path = d3.geo.path().projection(projection);
+    //解析json
+    d3.json("china.geo.json", function(json) {
+        svg.selectAll("path")
+            .data(json.features)
+            .enter()
+            .append("path")
+            .attr("d", path)
+            .attr('fill', 'rgba(255,0,0,0)')//----主体颜色
+            // .attr('fill', 'rgba(10,24,68,1)')//----主体颜色
+            .attr('stroke', 'rgba(0,20,45,0)')//---省之间的界限颜色    
+    });
+</script>
